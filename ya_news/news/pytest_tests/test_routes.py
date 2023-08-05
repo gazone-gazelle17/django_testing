@@ -37,7 +37,7 @@ def test_availability_for_comment_and_delete(
         ('users:login', None),
         ('users:logout', None),
         ('users:signup', None),
-     ),
+    ),
 )
 @pytest.mark.django_db
 def test_pages_availability_for_different_users(
