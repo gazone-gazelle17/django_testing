@@ -28,16 +28,7 @@ class TestHomePage(TestCase):
             )
             for index in range(1, 11)
         ]
-        all_notes_reader = [
-            Note(
-                title=f'Новость {index}',
-                text='Просто текст.',
-                author=cls.reader,
-                slug=f'Slug-{index}'
-            )
-            for index in range(1, 11)
-        ]
-        Note.objects.bulk_create(all_notes_author + all_notes_reader)
+        Note.objects.bulk_create(all_notes_author)
 
     def test_notes_count(self):
         self.client.force_login(self.author)
