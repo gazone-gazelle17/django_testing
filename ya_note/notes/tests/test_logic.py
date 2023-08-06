@@ -116,7 +116,7 @@ class TestNoteEditionAndDeletion(TestCase):
     def test_not_unique_slug(self):
         form_data = self.form_data.copy()
         form_data['slug'] = 'test-slug'
-        response = self.author_client.post(self.url, data=form_data)
+        response = self.author_client.post(self.add_url, data=form_data)
         self.assertFormError(
             response,
             form='form',
