@@ -48,8 +48,8 @@ class TestNoteCreation(TestCase):
         self.assertEqual(note.author, self.user)
 
     def test_empty_slug(self):
-        no_slug = self.form_data.pop('slug')
-        response = self.auth_client.post(self.url, data=no_slug)
+        self.form_data.pop('slug')
+        response = self.auth_client.post(self.url, data=self.form_data)
         self.assertRedirects(response, self.redirect_url)
         notes_count_new = Note.objects.count()
         self.assertEqual(notes_count_new, self.notes_count + 1)
