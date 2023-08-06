@@ -29,6 +29,7 @@ class TestHomePage(TestCase):
             for index in range(1, 11)
         ]
         Note.objects.bulk_create(all_notes_author)
+        cls.note = all_notes_author[0]
 
     def test_notes_count(self):
         self.client.force_login(self.author)
@@ -46,8 +47,7 @@ class TestHomePage(TestCase):
 
     def test_note_edit_page_contains_form(self):
         self.client.force_login(self.author)
-        note = self.all_notes_author[0]
-        url = reverse('notes:edit', args=(note.slug,))
+        url = reverse('notes:edit', args=(self.note.slug,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertIn('form', response.context)
