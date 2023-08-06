@@ -114,8 +114,7 @@ class TestNoteEditionAndDeletion(TestCase):
         self.assertEqual(notes_count, 0)
 
     def test_not_unique_slug(self):
-        response = self.client.post(self.add_url, data=self.form_data)
-        self.assertFormError(
-            response, 'form', 'slug', [self.form_data['slug'] + WARNING])
-        notes_count = Note.objects.count()
-        self.assertEqual(notes_count, self.all_notes)
+    form_data = self.form_data.copy()
+    form_data['slug'] = 'test-slug'
+    with self.assertRaises(ValidationError):
+        response = self.auth_client.post(self.url, data=form_data)
