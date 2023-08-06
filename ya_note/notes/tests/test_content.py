@@ -46,7 +46,7 @@ class TestHomePage(TestCase):
 
     def test_note_edit_page_contains_form(self):
         self.client.force_login(self.author)
-        url = reverse('notes:edit', args=[self.note.slug])
+        url = reverse('notes:edit', args=[self.all_notes_author.slug])
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertIn('form', response.context)
