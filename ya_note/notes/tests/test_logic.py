@@ -59,6 +59,22 @@ class TestNoteCreation(TestCase):
         self.assertEqual(note.slug, slugify(self.form_data['title']))
         self.assertEqual(note.author, self.user)
 
+    def test_not_unique_slug(self):
+        response = self.auth_client.post(self.url, data=self.form_data)
+        notes_amount = Note.objects.count()
+        self.assertEqual(notes_amount, self.notes_count + 1)
+        form_data_same_slug = self.form_data.copy()
+        form_data_same_slug['slug'] = self.NOTE_SLUG
+        response = self.auth_client.post(self.url, data=form_data_same_slug)
+        self.assertFormError(
+            response,
+            form='form',
+            field='slug',
+            errors=WARNING
+        )
+        notes_count = Note.objects.count()
+        self.assertEqual(notes_count, notes_amount)
+
 
 class TestNoteEditionAndDeletion(TestCase):
     NOTE_TEXT = 'Текст заметки'
@@ -110,18 +126,5 @@ class TestNoteEditionAndDeletion(TestCase):
     def test_author_can_delete_note(self):
         response = self.author_client.delete(self.delete_url)
         self.assertRedirects(response, self.success_url)
-        notes_count = Note.objects.count()
-        self.assertEqual(notes_count, 0)
-
-    def test_not_unique_slug(self):
-        form_data = self.form_data.copy()
-        form_data['slug'] = 'test-slug'
-        response = self.author_client.post(self.add_url, data=form_data)
-        self.assertFormError(
-            response,
-            form='form',
-            field='slug',
-            errors=WARNING
-        )
         notes_count = Note.objects.count()
         self.assertEqual(notes_count, 0)
