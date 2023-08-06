@@ -40,7 +40,7 @@ class TestHomePage(TestCase):
         Note.objects.bulk_create(all_notes_author + all_notes_reader)
 
     def test_notes_count(self):
-        self.client.force_login(self.author)
+        self.client.force_login(self.reader)
         response = self.client.get(self.HOME_URL)
         object_list = response.context['object_list']
         object_amount = len(object_list)
