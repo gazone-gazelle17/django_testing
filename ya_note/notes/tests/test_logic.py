@@ -70,7 +70,7 @@ class TestNoteCreation(TestCase):
             response,
             form='form',
             field='slug',
-            errors=WARNING
+            errors=(form_data_same_slug['slug'] + WARNING)
         )
         notes_count = Note.objects.count()
         self.assertEqual(notes_count, notes_amount)
