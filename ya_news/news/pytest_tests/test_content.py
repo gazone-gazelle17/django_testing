@@ -9,11 +9,9 @@ def test_news_count_and_order(client, create_news_objects):
     url = reverse('news:home')
     response = client.get(url)
     object_list = response.context['object_list']
-    amount = len(object_list)
-    assert amount == len(create_news_objects)
+    assert len(object_list) == len(create_news_objects)
     dates = [news.date for news in object_list]
-    sorted_dates = sorted(dates, reverse=True)
-    assert dates == sorted_dates
+    assert dates == sorted(dates, reverse=True)
 
 
 @pytest.mark.parametrize(

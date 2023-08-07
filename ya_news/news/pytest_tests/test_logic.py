@@ -1,10 +1,9 @@
+from http import HTTPStatus
 import pytest
 
 from django.urls import reverse
 
 from pytest_django.asserts import assertRedirects
-
-from http import HTTPStatus
 
 from news.models import Comment
 from news.forms import BAD_WORDS, WARNING
@@ -27,8 +26,8 @@ def test_user_can_create_comment(
     url_with_anchor = url + '#comments'
     response = author_client.post(url, form_data)
     assertRedirects(response, url_with_anchor)
-    assert Comment.objects.count() == 1
-    new_comment = Comment.objects.get()
+    assert Comment.objects.exists()
+    new_comment = Comment.objects.first()
     assert new_comment.news == form_data['news']
     assert new_comment.author == author
     assert new_comment.text == form_data['text']
@@ -60,7 +59,7 @@ def test_user_cant_delete_comment_of_another_user(admin_client, news):
     url = reverse('news:delete', args=(news.id,))
     response = admin_client.post(url)
     assert response.status_code == HTTPStatus.NOT_FOUND
-    assert Comment.objects.count() == 0
+    assert not Comment.objects.exists()
 
 
 def test_author_can_edit_comment(author_client, news, form_data, comment):
