@@ -38,6 +38,7 @@ def create_news_objects():
         for i in range(settings.NEWS_COUNT_ON_HOME_PAGE)
     ]
     News.objects.bulk_create(news_list)
+    return news_list
 
 
 @pytest.fixture
